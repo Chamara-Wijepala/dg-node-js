@@ -11,15 +11,24 @@ const logEvents = async (message, logName) => {
 	console.log(logItem);
 	try {
 		// create logs directory if it doesn't exist
-		if (!fs.existsSync(path.join(__dirname, 'logs'))) {
-			await fsPromises.mkdir(path.join(__dirname, 'logs'));
+		if (!fs.existsSync(path.join(__dirname, '..', 'logs'))) {
+			await fsPromises.mkdir(path.join(__dirname, '..', 'logs'));
 		}
 		// appendFile creates a new file if it doesn't exist, but it won't create
 		// a new directory
-		await fsPromises.appendFile(path.join(__dirname, 'logs', logName), logItem);
+		await fsPromises.appendFile(
+			path.join(__dirname, '..', 'logs', logName),
+			logItem
+		);
 	} catch (err) {
 		console.error(err);
 	}
 };
 
-module.exports = logEvents;
+const logger = (req, res, next) => {
+	logEvents(`${req.method}\t${req.headers.origin}\t${req.url}`, 'reqLog.txt');
+	console.log(`${req.method} ${req.path}`);
+	next();
+};
+
+module.exports = { logger, logEvents };
