@@ -2,3 +2,6 @@
 20240214	19:55:06	77dcea61-df97-45b2-83f5-a9012cac1313	TypeError: fsPromises.readFil is not a function
 20240215	19:42:35	8f1a1cc6-52e3-4a0b-a9f7-e18e1d458216	Error: Not allowed by CORS
 20240215	19:42:35	c9d9c023-666d-414d-99fa-0eb533ec26b7	Error: Not allowed by CORS
+20240216	17:30:32	130ab36d-82ea-494a-97ff-8c9fed7eb1c0	Error: ENOENT: no such file or directory, stat '/home/chamara/web-projects/dg-node-js/views/subdir/test.html'
+20240216	17:55:41	381b4a3b-14c8-4266-958c-f750946191b1	TypeError: req.json is not a function
+20240216	18:08:39	81bc8b65-2903-450c-8516-f3671317ec56	SyntaxError: Expected double-quoted property name in JSON at position 23 (line 3 column 5)
