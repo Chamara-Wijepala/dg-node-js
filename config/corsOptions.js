@@ -1,7 +1,8 @@
-const whitelist = ['https://localhost:5173'];
+const allowedOrigins = require('./allowedOrigins');
+
 const corsOptions = {
 	origin: (origin, callback) => {
-		if (whitelist.indexOf(origin) !== -1 || !origin) {
+		if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
 			// params: error, is origin allowed
 			callback(null, true);
 		} else {
