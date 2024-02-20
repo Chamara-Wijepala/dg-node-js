@@ -27,8 +27,15 @@ const handleRefreshToken = (req, res) => {
 		(err, decoded) => {
 			if (err || foundUser.username !== decoded.username)
 				return res.sendStatus(403);
+			// get the codes of each role
+			const roles = Object.values(foundUser.roles);
 			const accessToken = jwt.sign(
-				{ username: decoded.username },
+				{
+					UserInfo: {
+						username: foundUser.username,
+						roles: roles,
+					},
+				},
 				// Had to put this in a template literal to solve issue with postman and
 				// thunder client. Unclear if these tools are the cause of the issue.
 				// This method might be unsafe
