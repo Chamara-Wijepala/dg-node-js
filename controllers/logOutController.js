@@ -1,11 +1,4 @@
-const fsPromises = require('fs').promises;
-const path = require('path');
-const usersDB = {
-	users: require('../model/users.json'),
-	setUsers: function (data) {
-		this.users = data;
-	},
-};
+const User = require('../model/User');
 
 const handleLogOut = async (req, res) => {
 	// on client, also delete access token
@@ -16,9 +9,7 @@ const handleLogOut = async (req, res) => {
 	const refreshToken = cookies.jwt;
 
 	// is refresh token in db?
-	const foundUser = usersDB.users.find(
-		(person) => person.refreshToken === refreshToken
-	);
+	const foundUser = await User.findOne({ refreshToken }).exec();
 	if (!foundUser) {
 		// when clearing cookies, the maxAge property is not required to match
 		res.clearCookie('jwt', { httpOnly: true, sameSite: 'None', secure: true });
@@ -26,15 +17,9 @@ const handleLogOut = async (req, res) => {
 	}
 
 	// delete refresh token
-	const otherUsers = usersDB.users.filter(
-		(person) => person.refreshToken !== foundUser.refreshToken
-	);
-	const currentUser = { ...foundUser, refreshToken: '' };
-	usersDB.setUsers([...otherUsers, currentUser]);
-	await fsPromises.writeFile(
-		path.join(__dirname, '..', 'model', 'users.json'),
-		JSON.stringify(usersDB.users)
-	);
+	foundUser.refreshToken = '';
+	const result = await foundUser.save();
+	console.log(result);
 
 	// In production, when sending and deleting cookies, add "flag secure: true"
 	// which will serve on https instead of http
